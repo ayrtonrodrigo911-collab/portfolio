@@ -1,0 +1,6 @@
+{
+  "name": "Site que Vende - Ayrton",
+  "description": "Plataforma de criação de sites profissionais de alta conversão, portfólio, livros de programação e mentoria.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
