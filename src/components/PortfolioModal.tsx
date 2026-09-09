@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ExternalLink, Sparkles, Smartphone, Laptop, CheckCircle2, TrendingUp, Zap } from 'lucide-react';
+import { X, ExternalLink, Sparkles, Smartphone, Laptop, CheckCircle2, TrendingUp, Zap, ArrowRight } from 'lucide-react';
 import { PortfolioProject } from '../types';
 
 interface PortfolioModalProps {
@@ -15,17 +15,7 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
   projects,
   onOpenQuote,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
-  const [activeProject, setActiveProject] = useState<PortfolioProject | null>(projects[0] || null);
-
   if (!isOpen) return null;
-
-  const categories = ['Todos', 'Fintech', 'Advocacia', 'Nutrição', 'E-commerce'];
-
-  const filteblueProjects =
-    selectedCategory === 'Todos'
-      ? projects
-      : projects.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
@@ -33,11 +23,6 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
         {/* Header */}
         <div className="p-6 border-b border-white/10 flex items-center justify-between bg-[#151f38]/60">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-[#007AFF]/15 text-[#007AFF] text-xs font-semibold uppercase tracking-wider">
-                Cases de Sucesso
-              </span>
-            </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-heading mt-1">
               Portfólio de Projetos
             </h2>
@@ -53,27 +38,10 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
           </button>
         </div>
 
-        {/* Category Filters */}
-        <div className="px-6 py-3 border-b border-white/10 flex items-center gap-2 overflow-x-auto bg-[#070D1F]/50">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
-                selectedCategory === cat
-                  ? 'bg-[#007AFF] text-[#00285c] font-bold shadow-[0_0_15px_rgba(0,209,255,0.4)]'
-                  : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
         {/* Modal Content */}
         <div className="p-6 max-h-[70vh] overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteblueProjects.map((project) => (
+            {projects.map((project) => (
               <div
                 key={project.id}
                 className="group rounded-xl overflow-hidden border border-white/10 bg-[#070D1F]/70 hover:border-[#007AFF]/40 transition-all flex flex-col justify-between"
@@ -102,63 +70,35 @@ export const PortfolioModal: React.FC<PortfolioModalProps> = ({
                       {project.description}
                     </p>
 
-                    {/* Metrics */}
-                    <div className="grid grid-cols-2 gap-2 mb-4 bg-white/5 p-3 rounded-lg border border-white/5">
-                      {project.metrics.map((m, idx) => (
-                        <div key={idx}>
-                          <span className="text-[10px] text-slate-400 block">{m.label}</span>
-                          <span className="text-xs font-bold text-[#007AFF] flex items-center gap-1">
-                            <TrendingUp className="w-3 h-3" />
-                            {m.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-700"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
                   </div>
-
-                  <button
-                    onClick={() => {
-                      onClose();
-                      onOpenQuote();
-                    }}
-                    className="w-full py-2.5 rounded-lg bg-white/10 hover:bg-[#007AFF] hover:text-[#00285c] text-xs font-bold text-white transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <span>Quero um Site com essa Qualidade</span>
-                    <Sparkles className="w-3.5 h-3.5" />
-                  </button>
+                  
+                  <div className="flex flex-col gap-2">
+                    <a
+                      href={project.pinterestUrl || "https://br.pinterest.com/"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2.5 rounded-lg bg-red-600 hover:bg-white text-white hover:text-red-600 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <span>Visualizar projeto no pinterest</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.951-7.252 4.17 0 7.41 2.967 7.41 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.367 18.592 0 12.017 0z"/></svg>
+                    </a>
+                    
+                    <a
+                      href="https://wa.me/5511999999999"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2.5 rounded-lg bg-white/10 hover:bg-[#007AFF] hover:text-[#00285c] text-xs font-bold text-white transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <span>Quero um Site com essa Qualidade</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="p-5 border-t border-white/10 bg-[#070D1F] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-xs text-slate-400">
-            Todos os projetos são 100% responsivos e com garantia de satisfação.
-          </span>
-          <button
-            onClick={() => {
-              onClose();
-              onOpenQuote();
-            }}
-            className="px-6 py-2.5 rounded-full bg-[#007AFF] hover:bg-[#38e1ff] text-[#00285c] font-bold text-xs sm:text-sm shadow-[0_0_20px_rgba(0,209,255,0.4)] transition-all cursor-pointer"
-          >
-            Solicitar Proposta para meu Nicho
-          </button>
-        </div>
       </div>
     </div>
   );

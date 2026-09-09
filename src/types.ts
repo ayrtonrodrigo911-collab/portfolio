@@ -20,6 +20,7 @@ export interface SiteConfig {
   mentorshipCard: CardConfig;
   youtubeCard: CardConfig;
   tiktokCard: CardConfig;
+  instagramCard: CardConfig;
   portfolioCard: CardConfig;
 }
 
@@ -32,6 +33,7 @@ export interface PortfolioProject {
   imageUrl: string;
   mobileImageUrl?: string;
   liveUrl?: string;
+  pinterestUrl?: string;
   tags: string[];
   metrics: {
     label: string;
@@ -69,4 +71,14 @@ export interface TikTokPost {
   likes: string;
   thumbnailUrl: string;
   postUrl: string;
+}
+
+export interface LibraryCategory {
+  id: string;
+  title: string;
+  description?: string;
+  iconName?: string;
+  iconImageUrl?: string;
+  subcategories?: LibraryCategory[];
+  books?: ProgrammingBook[];
 }

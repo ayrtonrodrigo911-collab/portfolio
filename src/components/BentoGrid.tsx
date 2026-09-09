@@ -155,8 +155,8 @@ export const BentoGrid: React.FC<BentoGridProps> = ({
         </div>
       </div>
 
-      {/* Bottom Grid Row: 3 Equal Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* Bottom Grid Row: 4 Equal Columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Card 4: Canal do YouTube */}
         <div
           id="card-canal-youtube"
@@ -212,6 +212,36 @@ export const BentoGrid: React.FC<BentoGridProps> = ({
               </h3>
               <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
                 {config.tiktokCard.subtitle}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 5.5: Instagram */}
+        <div
+          id="card-instagram"
+          onClick={() => window.open(config.instagramCard.actionUrl || 'https://instagram.com/ayrtonrodrigoyt', '_blank')}
+          className="group relative rounded-2xl overflow-hidden cursor-pointer border border-white/[0.08] hover:border-[#007AFF]/40 bg-[#0F172A]/80 backdrop-blur-md transition-all duration-300 hover:shadow-[0_15px_35px_-10px_rgba(0,122,255,0.2)] flex flex-col"
+        >
+          {/* Thumbnail with Instagram Glow */}
+          <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900">
+            <img
+              src={config.instagramCard.imageUrl}
+              alt="Instagram"
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent" />
+          </div>
+
+          {/* Text Area */}
+          <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-white font-heading group-hover:text-[#007AFF] transition-colors mb-1">
+                {config.instagramCard.title}
+              </h3>
+              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                {config.instagramCard.subtitle}
               </p>
             </div>
           </div>

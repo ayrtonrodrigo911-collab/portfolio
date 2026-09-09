@@ -4,7 +4,7 @@ import { HeroSection } from './components/HeroSection';
 import { BentoGrid } from './components/BentoGrid';
 import { QuoteModal } from './components/QuoteModal';
 import { PortfolioModal } from './components/PortfolioModal';
-import { BooksModal } from './components/BooksModal';
+import { BooksPage } from './components/BooksPage';
 import { MentorshipModal } from './components/MentorshipModal';
 import { YouTubeModal } from './components/YouTubeModal';
 import { TikTokModal } from './components/TikTokModal';
@@ -12,7 +12,7 @@ import { ContactModal } from './components/ContactModal';
 import {
   DEFAULT_SITE_CONFIG,
   DEFAULT_PORTFOLIO_PROJECTS,
-  DEFAULT_BOOKS,
+  LIBRARY_CATEGORIES,
   DEFAULT_YOUTUBE_VIDEOS,
   DEFAULT_TIKTOK_POSTS,
 } from './data/defaultData';
@@ -21,11 +21,11 @@ import { SiteConfig } from './types';
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('contato');
   const [siteConfig] = useState<SiteConfig>(DEFAULT_SITE_CONFIG);
+  const [currentView, setCurrentView] = useState<'home' | 'books'>('home');
 
   // Modal open states
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [isPortfolioOpen, setIsPortfolioOpen] = useState(false);
-  const [isBooksOpen, setIsBooksOpen] = useState(false);
   const [isMentorshipOpen, setIsMentorshipOpen] = useState(false);
   const [isYouTubeOpen, setIsYouTubeOpen] = useState(false);
   const [isTikTokOpen, setIsTikTokOpen] = useState(false);
@@ -45,7 +45,6 @@ export default function App() {
       if (e.key === 'Escape') {
         setIsQuoteOpen(false);
         setIsPortfolioOpen(false);
-        setIsBooksOpen(false);
         setIsMentorshipOpen(false);
         setIsYouTubeOpen(false);
         setIsTikTokOpen(false);
@@ -62,52 +61,61 @@ export default function App() {
       <div className="fixed inset-0 pointer-events-none -z-10 bg-radial-hero opacity-90" />
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[#007AFF]/10 rounded-full blur-[140px] pointer-events-none -z-10" />
 
-      {/* Main Top Navigation */}
-      <Navbar
-        activeTab={activeTab}
-        onSelectTab={handleSelectNavTab}
-        onOpenQuote={() => setIsQuoteOpen(true)}
-      />
+      {currentView === 'home' ? (
+        <>
+          {/* Main Top Navigation */}
+          <Navbar
+            activeTab={activeTab}
+            onSelectTab={handleSelectNavTab}
+            onOpenQuote={() => setIsQuoteOpen(true)}
+          />
 
-      {/* Main Content Area */}
-      <main className="flex-1">
-        {/* Hero Section */}
-        <HeroSection
-          headline={siteConfig.headline}
-          subheadline={siteConfig.subheadline}
+          {/* Main Content Area */}
+          <main className="flex-1">
+            {/* Hero Section */}
+            <HeroSection
+              headline={siteConfig.headline}
+              subheadline={siteConfig.subheadline}
+            />
+
+            {/* 6-Card Bento Grid */}
+            <BentoGrid
+              config={siteConfig}
+              onOpenQuote={() => setIsQuoteOpen(true)}
+              onOpenBooks={() => setCurrentView('books')}
+              onOpenMentorship={() => setIsMentorshipOpen(true)}
+              onOpenYouTube={() => setIsYouTubeOpen(true)}
+              onOpenTikTok={() => setIsTikTokOpen(true)}
+              onOpenPortfolio={() => setIsPortfolioOpen(true)}
+            />
+          </main>
+
+          {/* Footer */}
+          <footer className="w-full border-t border-white/[0.06] bg-[#0A0F1E]/80 backdrop-blur-sm py-8 px-4 text-center text-xs text-slate-400">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-slate-300">
+                  Sites Profissionais de Alta Conversão
+                </span>
+              </div>
+
+              <div className="flex items-center space-x-6 text-slate-400">
+                <button
+                  onClick={() => setIsContactOpen(true)}
+                  className="hover:text-[#007AFF] transition-colors cursor-pointer"
+                >
+                  Contato & WhatsApp
+                </button>
+              </div>
+            </div>
+          </footer>
+        </>
+      ) : (
+        <BooksPage 
+          categories={LIBRARY_CATEGORIES} 
+          onBack={() => setCurrentView('home')} 
         />
-
-        {/* 6-Card Bento Grid */}
-        <BentoGrid
-          config={siteConfig}
-          onOpenQuote={() => setIsQuoteOpen(true)}
-          onOpenBooks={() => setIsBooksOpen(true)}
-          onOpenMentorship={() => setIsMentorshipOpen(true)}
-          onOpenYouTube={() => setIsYouTubeOpen(true)}
-          onOpenTikTok={() => setIsTikTokOpen(true)}
-          onOpenPortfolio={() => setIsPortfolioOpen(true)}
-        />
-      </main>
-
-      {/* Footer */}
-      <footer className="w-full border-t border-white/[0.06] bg-[#0A0F1E]/80 backdrop-blur-sm py-8 px-4 text-center text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-slate-300">
-              Sites Profissionais de Alta Conversão
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-6 text-slate-400">
-            <button
-              onClick={() => setIsContactOpen(true)}
-              className="hover:text-[#007AFF] transition-colors cursor-pointer"
-            >
-              Contato & WhatsApp
-            </button>
-          </div>
-        </div>
-      </footer>
+      )}
 
       {/* Interactive Modals */}
       <QuoteModal
@@ -124,12 +132,6 @@ export default function App() {
           setIsPortfolioOpen(false);
           setIsQuoteOpen(true);
         }}
-      />
-
-      <BooksModal
-        isOpen={isBooksOpen}
-        onClose={() => setIsBooksOpen(false)}
-        books={DEFAULT_BOOKS}
       />
 
       <MentorshipModal
